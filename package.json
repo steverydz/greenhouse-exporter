@@ -1,0 +1,12 @@
+{
+  "name": "thedb",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+  	"start": "python3 main.py",
+    "build": ""
+  },
+  "author": "",
+  "license": "ISC"
+}

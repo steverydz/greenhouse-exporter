@@ -1,0 +1,5 @@
+yarn.lock
+.python-version
+node_modules
+.dotrun.json
+.venv
