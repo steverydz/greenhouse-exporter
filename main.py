@@ -1,6 +1,6 @@
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy import ForeignKey
 from sqlalchemy import create_engine
 from sqlalchemy.sql.expression import label
@@ -42,18 +42,19 @@ class Jobs(Base):
     id = Column(Integer, primary_key=True)
     title = Column(String)
     status = Column(String)
-    # open_date = Column(String)
-    # close_date = Column(String)
+    open_date = Column(DateTime)
+    close_date = Column(DateTime)
 
 
 class Events(Base):
     __tablename__ = "events"
 
     id = Column(Integer, primary_key=True)
-    # date = Column()
+    date = Column(DateTime)
     candidate_id = Column(Integer, ForeignKey("candidates.id"))
     employee_id = Column(Integer, ForeignKey("employees.id"))
     job_id = Column(Integer, ForeignKey("jobs.id"))
+    type_id = Column(Integer, ForeignKey("types.id"))
 
 
 class Types(Base):
