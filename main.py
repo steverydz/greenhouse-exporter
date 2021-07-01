@@ -1,71 +1,24 @@
-from sqlalchemy.orm import declarative_base
+import os
+import psycopg2
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import Column, Integer, String, DateTime
-from sqlalchemy import ForeignKey
 from sqlalchemy import create_engine
-from sqlalchemy.sql.expression import label
 
-Base = declarative_base()
-engine = create_engine(
-    "postgresql://postgres:pw@localhost:5432/postgres", echo=True
-)
+from models import Base
+from functions import add_new_candidates
 
 
-class Roles(Base):
-    __tablename__ = "roles"
+# Connect to greenhouse database
+greenhouse_connection = psycopg2.connect(os.getenv("GREENHOUSE_DATABASE_URL"))
+greenhouse_cursor = greenhouse_connection.cursor()
 
-    id = Column(Integer, primary_key=True)
-    name = Column(String)
-
-
-class Employees(Base):
-    __tablename__ = "employees"
-
-    id = Column(Integer, primary_key=True)
-    name = Column(String)
-    fullname = Column(String)
-    role_id = Column(Integer, ForeignKey("roles.id"))
-
-
-class Candidates(Base):
-    __tablename__ = "candidates"
-
-    id = Column(Integer, primary_key=True)
-    name = Column(String)
-    fullname = Column(String)
-    greenhouse_link = Column(String)
-
-
-class Jobs(Base):
-    __tablename__ = "jobs"
-
-    id = Column(Integer, primary_key=True)
-    title = Column(String)
-    status = Column(String)
-    open_date = Column(DateTime)
-    close_date = Column(DateTime)
-
-
-class Events(Base):
-    __tablename__ = "events"
-
-    id = Column(Integer, primary_key=True)
-    date = Column(DateTime)
-    candidate_id = Column(Integer, ForeignKey("candidates.id"))
-    employee_id = Column(Integer, ForeignKey("employees.id"))
-    job_id = Column(Integer, ForeignKey("jobs.id"))
-    type_id = Column(Integer, ForeignKey("types.id"))
-
-
-class Types(Base):
-    __tablename__ = "types"
-
-    id = Column(Integer, primary_key=True)
-    label = Column(String)
-
-
+# Connect to our database
+engine = create_engine(os.getenv("CANONICAL_DATABASE_URL"))
 Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
 session = Session()
 
-session.commit()
+# Run functions to fill the database
+add_new_candidates(greenhouse_cursor, session)
+
+# Close connection
+greenhouse_connection.close()

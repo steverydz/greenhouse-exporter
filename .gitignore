@@ -4,3 +4,4 @@ node_modules
 .dotrun.json
 .venv
 .env.local
+__pycache__/
