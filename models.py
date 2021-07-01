@@ -1,5 +1,5 @@
 from sqlalchemy.orm import declarative_base
-from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy import Column, Integer, String, DateTime, Enum
 from sqlalchemy import ForeignKey
 from sqlalchemy.sql.expression import label
 
@@ -34,10 +34,10 @@ class Jobs(Base):
     __tablename__ = "jobs"
 
     id = Column(Integer, primary_key=True)
-    title = Column(String)
+    name = Column(String)
     status = Column(String)
-    open_date = Column(DateTime)
-    close_date = Column(DateTime)
+    opened_at = Column(DateTime)
+    closed_at = Column(DateTime)
 
 
 class Events(Base):
@@ -48,11 +48,17 @@ class Events(Base):
     candidate_id = Column(Integer, ForeignKey("candidates.id"))
     employee_id = Column(Integer, ForeignKey("employees.id"))
     job_id = Column(Integer, ForeignKey("jobs.id"))
-    type_id = Column(Integer, ForeignKey("types.id"))
-
-
-class Types(Base):
-    __tablename__ = "types"
-
-    id = Column(Integer, primary_key=True)
-    label = Column(String)
+    type = Column(
+        Enum(
+            "candidate_applied",
+            "cv_reviewed",
+            "scorecard_added",
+            "stage_moved",
+            "interview_schedule",
+            "participated_interview",
+            "hired",
+            "rejected",
+            "invitations_sent",
+            name="types",
+        )
+    )

@@ -4,7 +4,10 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 
 from models import Base
-from functions import add_new_candidates
+from functions import (
+    add_new_candidates,
+    get_jobs
+) 
 
 
 # Connect to greenhouse database
@@ -18,6 +21,7 @@ Session = sessionmaker(bind=engine)
 session = Session()
 
 # Run functions to fill the database
+get_jobs(greenhouse_cursor, session)
 add_new_candidates(greenhouse_cursor, session)
 
 # Close connection
