@@ -6,23 +6,23 @@ from sqlalchemy.sql.expression import label
 
 Base = declarative_base()
 
-class Roles(Base):
+class Role(Base):
     __tablename__ = "roles"
 
     id = Column(Integer, primary_key=True)
     name = Column(String)
 
 
-class Employees(Base):
+class Employee(Base):
     __tablename__ = "employees"
 
     id = Column(Integer, primary_key=True)
-    name = Column(String)
-    fullname = Column(String)
+    full_name = Column(String)
+    email = Column(String)
     role_id = Column(Integer, ForeignKey("roles.id"))
 
 
-class Candidates(Base):
+class Candidate(Base):
     __tablename__ = "candidates"
 
     id = Column(Integer, primary_key=True)
@@ -30,7 +30,7 @@ class Candidates(Base):
     last_name = Column(String)
 
 
-class Jobs(Base):
+class Job(Base):
     __tablename__ = "jobs"
 
     id = Column(Integer, primary_key=True)
@@ -40,7 +40,7 @@ class Jobs(Base):
     closed_at = Column(DateTime)
 
 
-class Events(Base):
+class Event(Base):
     __tablename__ = "events"
 
     id = Column(Integer, primary_key=True)
