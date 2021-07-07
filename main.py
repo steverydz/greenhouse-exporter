@@ -6,7 +6,9 @@ from sqlalchemy import create_engine
 from models import Base
 from functions import (
     add_new_candidates,
-    get_jobs
+    get_jobs,
+    import_candidate_rejections,
+    import_employees
 ) 
 
 
@@ -21,8 +23,10 @@ Session = sessionmaker(bind=engine)
 session = Session()
 
 # Run functions to fill the database
+import_employees(greenhouse_cursor, session)
 get_jobs(greenhouse_cursor, session)
 add_new_candidates(greenhouse_cursor, session)
+import_candidate_rejections(greenhouse_cursor, session)
 
 # Close connection
 greenhouse_connection.close()
