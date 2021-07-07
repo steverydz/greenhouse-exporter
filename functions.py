@@ -6,7 +6,7 @@ def import_employees(greenhouse_cursor, canonical_session):
 
     for user in greenhouse_cursor.fetchall():
         canonical_session.add(
-            Employees(
+            Employee(
                 id=user[0],
                 full_name=user[1],
                 email=user[2],
@@ -61,9 +61,9 @@ def import_candidate_rejections(greenhouse_cursor, canonical_session):
         canonical_session.add(
             Event(
                 candidate_id=rejection[0],
-                employee_id=rejection[1]
+                employee_id=rejection[1],
                 job_id=rejection[2],
-                date=rejection[3]
+                date=rejection[3],
                 type="rejected",
             )
         )
