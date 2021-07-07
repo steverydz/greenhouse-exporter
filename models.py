@@ -19,8 +19,7 @@ class Employee(Base):
     id = Column(Integer, primary_key=True)
     full_name = Column(String)
     email = Column(String)
-    role_id = Column(Integer, ForeignKey("roles.id"))
-
+    status = Column(String)
 
 class Candidate(Base):
     __tablename__ = "candidates"

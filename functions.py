@@ -1,6 +1,22 @@
 from models import Candidate, Employee, Event, Job
 
 
+def import_employees(greenhouse_cursor, canonical_session):
+    greenhouse_cursor.execute("SELECT id, full_name, email, status FROM users")
+
+    for user in greenhouse_cursor.fetchall():
+        canonical_session.add(
+            Employees(
+                id=user[0],
+                full_name=user[1],
+                email=user[2],
+                status=user[3]
+            )
+        )
+
+    canonical_session.commit()
+
+
 def get_jobs(greenhouse_cursor, canonical_session):
     greenhouse_cursor.execute(
         "SELECT id, name, opened_at FROM jobs t WHERE status='open'"
@@ -11,6 +27,7 @@ def get_jobs(greenhouse_cursor, canonical_session):
         canonical_session.add(j)
 
     canonical_session.commit()
+
 
 def add_new_candidates(greenhouse_cursor, canonical_session):
     greenhouse_cursor.execute(
