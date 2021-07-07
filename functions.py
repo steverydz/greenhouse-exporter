@@ -50,3 +50,22 @@ def add_new_candidates(greenhouse_cursor, canonical_session):
             canonical_session.add(e)
 
     canonical_session.commit()
+
+
+def import_candidate_rejections(greenhouse_cursor, canonical_session):
+    greenhouse_cursor.execute(
+        "SELECT c.id, u.id, jp.job_id, a.rejected_at FROM applications a JOIN users u on a.rejected_by_id = u.id JOIN candidates c on a.candidate_id = c.id JOIN job_posts jp on a.job_post_id = jp.id;"
+    )
+
+    for rejection in greenhouse_cursor.fetchall():
+        canonical_session.add(
+            Event(
+                candidate_id=rejection[0],
+                employee_id=rejection[1]
+                job_id=rejection[2],
+                date=rejection[3]
+                type="rejected",
+            )
+        )
+
+    canonical_session.commit()
