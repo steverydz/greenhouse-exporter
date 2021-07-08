@@ -10,8 +10,8 @@ The database diagram can be found here: https://miro.com/app/board/o9J_l86oZgU=/
 - Create a file `.env.local`: `mkdir .env.local`
 - In this file add the 2 databases strings (ours and greenhouse's):
 ```
-GREENHOUSE_DATABASE_URL=postgres://USER:PASSWORD@HOST:PORT/DATABASE
-CANONICAL_DATABASE_URL=postgres://USER:PASSWORD@HOST:PORT/DATABASE
+GREENHOUSE_DATABASE_URL=postgresql://USER:PASSWORD@HOST:PORT/DATABASE
+CANONICAL_DATABASE_URL=postgresql://USER:PASSWORD@HOST:PORT/DATABASE
 ```
 - `dotrun`
 - Have fun querying your new database.
