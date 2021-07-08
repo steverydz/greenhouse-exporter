@@ -7,7 +7,9 @@ from models import Base
 from functions import (
     add_new_candidates,
     get_jobs,
+    import_candidate_applications,
     import_candidate_rejections,
+    import_candidate_hired,
     import_employees
 ) 
 
@@ -26,7 +28,9 @@ session = Session()
 import_employees(greenhouse_cursor, session)
 get_jobs(greenhouse_cursor, session)
 add_new_candidates(greenhouse_cursor, session)
+import_candidate_applications(greenhouse_cursor, session)
 import_candidate_rejections(greenhouse_cursor, session)
+import_candidate_hired(greenhouse_cursor, session)
 
 # Close connection
 greenhouse_connection.close()
