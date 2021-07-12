@@ -10,7 +10,8 @@ from functions import (
     import_candidate_applications,
     import_candidate_rejections,
     import_candidate_hired,
-    import_employees
+    import_employees,
+    import_cv_reviewed
 ) 
 
 
@@ -31,6 +32,7 @@ add_new_candidates(greenhouse_cursor, session)
 import_candidate_applications(greenhouse_cursor, session)
 import_candidate_rejections(greenhouse_cursor, session)
 import_candidate_hired(greenhouse_cursor, session)
+import_cv_reviewed(greenhouse_cursor, session)
 
 # Close connection
 greenhouse_connection.close()
