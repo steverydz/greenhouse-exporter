@@ -144,3 +144,22 @@ def participated_interview(greenhouse_cursor, canonical_session):
         )
 
     canonical_session.commit()
+
+
+def scorecard_added(greenhouse_cursor, canonical_session):
+    greenhouse_cursor.execute(
+        "SELECT s.interviewer_id, s.submitted_at, jp.job_id, a.candidate_id FROM scorecards s JOIN applications a ON a.id = s.application_id JOIN job_posts jp ON a.job_post_id = jp.id;"
+    )
+
+    for scorecard in greenhouse_cursor.fetchall():
+        canonical_session.add(
+            Event(
+                candidate_id=scorecard[3],
+                job_id=scorecard[2],
+                date=scorecard[1],
+                employee_id=scorecard[0],
+                type="scorecard_added",
+            )
+        )
+
+    canonical_session.commit()
