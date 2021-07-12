@@ -6,6 +6,7 @@ from sqlalchemy.sql.expression import label
 
 Base = declarative_base()
 
+
 class Role(Base):
     __tablename__ = "roles"
 
@@ -20,6 +21,7 @@ class Employee(Base):
     full_name = Column(String)
     email = Column(String)
     status = Column(String)
+
 
 class Candidate(Base):
     __tablename__ = "candidates"
