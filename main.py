@@ -13,7 +13,8 @@ from functions import (
     import_employees,
     import_cv_reviewed,
     interview_scheduled,
-) 
+    participated_interview,
+)
 
 
 # Connect to greenhouse database
@@ -35,6 +36,7 @@ import_candidate_rejections(greenhouse_cursor, session)
 import_candidate_hired(greenhouse_cursor, session)
 import_cv_reviewed(greenhouse_cursor, session)
 interview_scheduled(greenhouse_cursor, session)
+participated_interview(greenhouse_cursor, session)
 
 # Close connection
 greenhouse_connection.close()

@@ -7,10 +7,7 @@ def import_employees(greenhouse_cursor, canonical_session):
     for user in greenhouse_cursor.fetchall():
         canonical_session.add(
             Employee(
-                id=user[0],
-                full_name=user[1],
-                email=user[2],
-                status=user[3]
+                id=user[0], full_name=user[1], email=user[2], status=user[3]
             )
         )
 
@@ -18,9 +15,7 @@ def import_employees(greenhouse_cursor, canonical_session):
 
 
 def get_jobs(greenhouse_cursor, canonical_session):
-    greenhouse_cursor.execute(
-        "SELECT id, name, opened_at FROM jobs"
-    )
+    greenhouse_cursor.execute("SELECT id, name, opened_at FROM jobs")
 
     for job in greenhouse_cursor.fetchall():
         j = Job(id=job[0], name=job[1], status="open", opened_at=job[2])
@@ -36,23 +31,27 @@ def add_new_candidates(greenhouse_cursor, canonical_session):
 
     all_candidates = greenhouse_cursor.fetchall()
     for candidate in all_candidates:
-        c = Candidate(id=candidate[0], first_name=candidate[1], last_name=candidate[2])
+        c = Candidate(
+            id=candidate[0], first_name=candidate[1], last_name=candidate[2]
+        )
         canonical_session.add(c)
 
     canonical_session.commit()
 
 
 def import_candidate_applications(greenhouse_cursor, canonical_session):
-        greenhouse_cursor.execute(f"SELECT a.applied_at, a.candidate_id ,jp.job_id FROM applications a join job_posts jp on a.job_post_id = jp.id")
-        for application in greenhouse_cursor.fetchall():
-            e = Event(
-                date=application[0],
-                candidate_id=application[1],
-                job_id=application[2],
-                type="candidate_applied",
-            )
-            canonical_session.add(e)
-        canonical_session.commit()
+    greenhouse_cursor.execute(
+        f"SELECT a.applied_at, a.candidate_id ,jp.job_id FROM applications a join job_posts jp on a.job_post_id = jp.id"
+    )
+    for application in greenhouse_cursor.fetchall():
+        e = Event(
+            date=application[0],
+            candidate_id=application[1],
+            job_id=application[2],
+            type="candidate_applied",
+        )
+        canonical_session.add(e)
+    canonical_session.commit()
 
 
 def import_candidate_rejections(greenhouse_cursor, canonical_session):
@@ -122,6 +121,25 @@ def interview_scheduled(greenhouse_cursor, canonical_session):
                 job_id=interview_scheduled[0],
                 date=interview_scheduled[2],
                 type="interview_scheduled",
+            )
+        )
+
+    canonical_session.commit()
+
+
+def participated_interview(greenhouse_cursor, canonical_session):
+    greenhouse_cursor.execute(
+        "SELECT i.user_id, jp.job_id, si.ends_at, a.candidate_id FROM interviewers i JOIN scheduled_interviews si on i.interview_id = si.id JOIN applications a ON a.id = si.application_id JOIN job_posts jp ON a.job_post_id = jp.id"
+    )
+
+    for participated_interview in greenhouse_cursor.fetchall():
+        canonical_session.add(
+            Event(
+                candidate_id=participated_interview[3],
+                job_id=participated_interview[1],
+                date=participated_interview[2],
+                employee_id=participated_interview[0],
+                type="participated_interview",
             )
         )
 
