@@ -108,3 +108,21 @@ def import_cv_reviewed(greenhouse_cursor, canonical_session):
         )
 
     canonical_session.commit()
+
+
+def interview_scheduled(greenhouse_cursor, canonical_session):
+    greenhouse_cursor.execute(
+        "SELECT jp.job_id, a.candidate_id, si.scheduled_at FROM scheduled_interviews si JOIN applications a ON a.id = si.application_id JOIN job_posts jp ON a.job_post_id = jp.id"
+    )
+
+    for interview_scheduled in greenhouse_cursor.fetchall():
+        canonical_session.add(
+            Event(
+                candidate_id=interview_scheduled[1],
+                job_id=interview_scheduled[0],
+                date=interview_scheduled[2],
+                type="interview_scheduled",
+            )
+        )
+
+    canonical_session.commit()

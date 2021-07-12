@@ -53,7 +53,7 @@ class Event(Base):
             "cv_reviewed",
             "scorecard_added",
             "stage_moved",
-            "interview_schedule",
+            "interview_scheduled",
             "participated_interview",
             "hired",
             "rejected",
