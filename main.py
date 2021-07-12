@@ -15,6 +15,7 @@ from functions import (
     interview_scheduled,
     participated_interview,
     scorecard_added,
+    stage_moved,
 )
 
 
@@ -39,6 +40,7 @@ import_cv_reviewed(greenhouse_cursor, session)
 interview_scheduled(greenhouse_cursor, session)
 participated_interview(greenhouse_cursor, session)
 scorecard_added(greenhouse_cursor, session)
+stage_moved(greenhouse_cursor, session)
 
 # Close connection
 greenhouse_connection.close()
