@@ -39,6 +39,7 @@ class Job(Base):
     status = Column(String)
     opened_at = Column(DateTime)
     closed_at = Column(DateTime)
+    hiring_lead = Column(Integer, ForeignKey("employees.id"))
 
 
 class Event(Base):

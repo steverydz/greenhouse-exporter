@@ -1,4 +1,5 @@
 from models import Candidate, Employee, Event, Job
+import csv
 
 
 def import_employees(greenhouse_cursor, canonical_session):
@@ -18,8 +19,39 @@ def get_jobs(greenhouse_cursor, canonical_session):
     greenhouse_cursor.execute("SELECT id, name, opened_at FROM jobs")
 
     for job in greenhouse_cursor.fetchall():
-        j = Job(id=job[0], name=job[1], status="open", opened_at=job[2])
-        canonical_session.add(j)
+        with open("hiring_leads.csv", "r") as csvfile:
+            hiring_leads = csv.reader(csvfile, skipinitialspace=True)
+            j = None
+            for hiring_lead in hiring_leads:
+                if hiring_lead[1] == str(job[0]) and hiring_lead[3]:
+                    # in case there are more than one, then skip
+                    try:
+                        e = (
+                            canonical_session.query(Employee)
+                            .filter(Employee.full_name == hiring_lead[3])
+                            .one_or_none()
+                        )
+                        j = Job(
+                            id=job[0],
+                            name=job[1],
+                            status="open",
+                            opened_at=job[2],
+                            hiring_lead=e.id,
+                        )
+                        canonical_session.add(j)
+                    except:
+                        pass
+                    break
+
+            # for history we keep the jobs without hiring leads
+            if not j:
+                j = Job(
+                    id=job[0],
+                    name=job[1],
+                    status="open",
+                    opened_at=job[2]
+                )
+                canonical_session.add(j)
 
     canonical_session.commit()
 
@@ -41,7 +73,7 @@ def add_new_candidates(greenhouse_cursor, canonical_session):
 
 def import_candidate_applications(greenhouse_cursor, canonical_session):
     greenhouse_cursor.execute(
-        f"SELECT a.applied_at, a.candidate_id ,jp.job_id FROM applications a join job_posts jp on a.job_post_id = jp.id"
+        f"SELECT a.applied_at, a.candidate_id, jp.job_id FROM applications a join job_posts jp on a.job_post_id = jp.id"
     )
     for application in greenhouse_cursor.fetchall():
         e = Event(
