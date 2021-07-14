@@ -99,7 +99,7 @@ def import_candidate_hired(greenhouse_cursor, canonical_session):
     canonical_session.commit()
 
 
-def import_cv_reviewed(greenhouse_cursor, canonical_session):
+def import_cv_reviewed(greenhouse_cursor, canonical_session, hiring_leads):
     greenhouse_cursor.execute(
         "SELECT jp.job_id, a.candidate_id, aps.exited_on FROM application_stages aps JOIN applications a ON a.id = aps.application_id JOIN job_posts jp ON a.job_post_id = jp.id WHERE aps.stage_name='Application Review' AND aps.exited_on is not null"
     )
@@ -108,6 +108,7 @@ def import_cv_reviewed(greenhouse_cursor, canonical_session):
         canonical_session.add(
             Event(
                 candidate_id=cv_reviewed[1],
+                employee_id=hiring_leads.get(cv_reviewed[0]),
                 job_id=cv_reviewed[0],
                 date=cv_reviewed[2],
                 type="cv_reviewed",
