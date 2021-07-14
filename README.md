@@ -13,5 +13,5 @@ The database diagram can be found here: https://miro.com/app/board/o9J_l86oZgU=/
 GREENHOUSE_DATABASE_URL=postgresql://USER:PASSWORD@HOST:PORT/DATABASE
 CANONICAL_DATABASE_URL=postgresql://USER:PASSWORD@HOST:PORT/DATABASE
 ```
-- `dotrun`
+- `dotrun exec yarn run migrate`
 - Have fun querying your new database.
