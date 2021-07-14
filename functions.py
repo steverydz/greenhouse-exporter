@@ -1,4 +1,5 @@
 from models import Candidate, Employee, Event, Job
+import csv
 
 
 def import_employees(greenhouse_cursor, canonical_session):
@@ -14,12 +15,19 @@ def import_employees(greenhouse_cursor, canonical_session):
     canonical_session.commit()
 
 
-def get_jobs(greenhouse_cursor, canonical_session):
+def get_jobs(greenhouse_cursor, canonical_session, hiring_leads):
     greenhouse_cursor.execute("SELECT id, name, opened_at FROM jobs")
 
     for job in greenhouse_cursor.fetchall():
-        j = Job(id=job[0], name=job[1], status="open", opened_at=job[2])
-        canonical_session.add(j)
+        canonical_session.add(
+            Job(
+                id=job[0],
+                name=job[1],
+                status="open",
+                opened_at=job[2],
+                hiring_lead=hiring_leads.get(job[0]),
+            )
+        )
 
     canonical_session.commit()
 
@@ -41,7 +49,7 @@ def add_new_candidates(greenhouse_cursor, canonical_session):
 
 def import_candidate_applications(greenhouse_cursor, canonical_session):
     greenhouse_cursor.execute(
-        f"SELECT a.applied_at, a.candidate_id ,jp.job_id FROM applications a join job_posts jp on a.job_post_id = jp.id"
+        f"SELECT a.applied_at, a.candidate_id, jp.job_id FROM applications a join job_posts jp on a.job_post_id = jp.id"
     )
     for application in greenhouse_cursor.fetchall():
         e = Event(

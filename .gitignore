@@ -5,3 +5,4 @@ node_modules
 .venv
 .env.local
 __pycache__/
+hiring_leads.csv
