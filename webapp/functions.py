@@ -1,5 +1,5 @@
-from models import Candidate, Employee, Event, Job
 import csv
+from webapp.models import Candidate, Employee, Event, Job
 
 
 def import_employees(greenhouse_cursor, canonical_session):

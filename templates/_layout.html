@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta https-equiv="Accept-CH" content="DPR, Viewport-Width, Width">
+
+  <title>Greenhouse Dashboard</title>
+
+  <link rel="shortcut icon" type="image/png" href="https://assets.ubuntu.com/v1/f0c0fc0a-dqlite-favicon.png">
+
+  <link rel="preload" as="font" type="font/woff2" href="https://assets.ubuntu.com/v1/e8c07df6-Ubuntu-L_W.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="https://assets.ubuntu.com/v1/7f100985-Ubuntu-Th_W.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="https://assets.ubuntu.com/v1/f8097dea-Ubuntu-LI_W.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="https://assets.ubuntu.com/v1/fff37993-Ubuntu-R_W.woff2" crossorigin>
+  <link rel="stylesheet" type="text/css" media="screen" href="{{ versioned_static('css/styles.css') }}" />
+</head>
+
+<body>
+  <div id="main">
+    {% block content %}{% endblock content %}
+  </div>
+</body>
+</html>

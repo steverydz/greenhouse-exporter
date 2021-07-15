@@ -4,8 +4,8 @@ import psycopg2
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 
-from models import Base, Employee
-from functions import (
+from webapp.models import Base, Employee
+from webapp.functions import (
     add_new_candidates,
     get_jobs,
     import_candidate_applications,
