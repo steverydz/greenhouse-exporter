@@ -10,7 +10,7 @@
   },
   "devDependencies": {
     "autoprefixer": "10.2.4",
-    "vanilla-framework": "2.32.0",
+    "vanilla-framework": "2.33.0",
     "postcss": "8.2.10",
     "postcss-cli": "8.3.1",
     "sass": "1.27.0"
