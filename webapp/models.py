@@ -50,6 +50,7 @@ class Event(Base):
     candidate_id = Column(Integer, ForeignKey("candidates.id"))
     employee_id = Column(Integer, ForeignKey("employees.id"))
     job_id = Column(Integer, ForeignKey("jobs.id"))
+    stage = Column(String)
     type = Column(
         Enum(
             "candidate_applied",
@@ -61,6 +62,6 @@ class Event(Base):
             "hired",
             "rejected",
             "invitations_sent",
-            name="types",
+            name="event_types",
         )
     )
