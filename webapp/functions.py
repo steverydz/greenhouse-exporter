@@ -16,14 +16,14 @@ def import_employees(greenhouse_cursor, canonical_session):
 
 
 def get_jobs(greenhouse_cursor, canonical_session, hiring_leads):
-    greenhouse_cursor.execute("SELECT id, name, opened_at FROM jobs")
+    greenhouse_cursor.execute("SELECT id, name, opened_at, status FROM jobs")
 
     for job in greenhouse_cursor.fetchall():
         canonical_session.add(
             Job(
                 id=job[0],
                 name=job[1],
-                status="open",
+                status=job[3],
                 opened_at=job[2],
                 hiring_lead=hiring_leads.get(job[0]),
             )
@@ -176,7 +176,13 @@ def scorecard_added(greenhouse_cursor, canonical_session):
 
 def stage_moved(greenhouse_cursor, canonical_session):
     greenhouse_cursor.execute(
-        "SELECT jp.job_id, a.candidate_id, ast.entered_on FROM application_stages ast JOIN applications a on ast.application_id = a.id join job_posts jp on a.job_post_id = jp.id WHERE ast.entered_on is not null"
+        """
+            SELECT jp.job_id, a.candidate_id, ast.entered_on, ast.stage_name
+              FROM application_stages ast
+              JOIN applications a on ast.application_id = a.id
+              JOIN job_posts jp on a.job_post_id = jp.id
+              WHERE ast.entered_on is not null
+        """
     )
 
     for stage_move in greenhouse_cursor.fetchall():
@@ -185,6 +191,7 @@ def stage_moved(greenhouse_cursor, canonical_session):
                 candidate_id=stage_move[1],
                 job_id=stage_move[0],
                 date=stage_move[2],
+                stage=stage_move[3],
                 type="stage_moved",
             )
         )
