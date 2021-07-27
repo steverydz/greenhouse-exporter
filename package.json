@@ -2,7 +2,8 @@
   "author": "Canonical Webteam",
   "license": "LGPL v3",
   "scripts": {
-    "build": "yarn run build-css",
+    "build": "yarn run build-css && yarn run build-js",
+    "build-js": "esbuild static/js/dashboard.tsx --bundle --outfile=static/dist/dashboard.js",
     "build-css": "sass static/sass/styles.scss static/css/styles.css --load-path=node_modules --style=compressed && postcss --map false --use autoprefixer --replace 'static/css/**/*.css'",
     "serve": "./entrypoint 0.0.0.0:${PORT}",
     "start": "yarn run build && yarn run serve",
@@ -10,9 +11,12 @@
   },
   "devDependencies": {
     "autoprefixer": "10.2.4",
+    "esbuild": "0.12.16",
     "vanilla-framework": "2.33.0",
     "postcss": "8.2.10",
     "postcss-cli": "8.3.1",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
     "sass": "1.27.0"
   }
 }
