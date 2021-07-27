@@ -1,8 +1,11 @@
+import os
+
 from canonicalwebteam.flask_base.app import FlaskBase
 from flask import render_template
 
 from webapp.sso import init_sso, login_required
 
+HARVEST_API_KEY = os.getenv("HARVEST_API_KEY")
 
 app = FlaskBase(
     __name__,
@@ -14,6 +17,7 @@ app = FlaskBase(
 )
 
 init_sso(app)
+
 
 @app.route("/")
 @login_required
