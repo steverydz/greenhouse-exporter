@@ -6,7 +6,7 @@ export const InterviewParticipation: React.FC<{}> = () => {
 
   useEffect(() => {
     const getInterviews = async () => {
-      const response = await fetch("/api/get-jobs.json");
+      const response = await fetch("/api/interviews");
       setInterviews(await response.json());
     };
     getInterviews();
@@ -20,17 +20,21 @@ export const InterviewParticipation: React.FC<{}> = () => {
           headers={[
             { content: "Applicant" },
             { content: "Date" },
+            { content: "Stage" },
             { content: "Status" },
           ]}
-          rows={interviews.map(({ applicant, date, status }) => {
-            return {
-              columns: [
-                { content: applicant },
-                { content: date },
-                { content: status },
-              ],
-            };
-          })}
+          rows={interviews.map(
+            ({ applicant, date, current_stage, application_status }) => {
+              return {
+                columns: [
+                  { content: applicant },
+                  { content: date },
+                  { content: current_stage },
+                  { content: application_status },
+                ],
+              };
+            }
+          )}
         />
       </div>
     </section>

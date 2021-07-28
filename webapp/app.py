@@ -13,6 +13,7 @@ app = FlaskBase(
     __name__,
     "greenhouse-exporter",
     template_folder="../templates",
+    static_folder="../static",
 )
 
 init_sso(app)

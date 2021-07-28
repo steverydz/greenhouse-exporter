@@ -6,7 +6,7 @@ export const JobsDetails: React.FC<{}> = () => {
 
   useEffect(() => {
     const getJobs = async () => {
-      const response = await fetch("/api/get-jobs.json");
+      const response = await fetch("/api/jobs");
       setJobs(await response.json());
     };
     getJobs();
@@ -18,8 +18,8 @@ export const JobsDetails: React.FC<{}> = () => {
         <h2>Jobs details</h2>
         <MainTable
           headers={[{ content: "Job" }, { content: "Total applications" }]}
-          rows={jobs.map(({ name, count }) => {
-            return { columns: [{ content: name }, { content: count }] };
+          rows={jobs.map(({ job, applications }) => {
+            return { columns: [{ content: job }, { content: applications }] };
           })}
         />
       </div>
