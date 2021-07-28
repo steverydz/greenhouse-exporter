@@ -2,8 +2,9 @@
   "author": "Canonical Webteam",
   "license": "LGPL v3",
   "scripts": {
+    "watch-js": "watch -p 'static/js/**/*.tsx' -c 'yarn run build-js'",
     "build": "yarn run build-css && yarn run build-js",
-    "build-js": "esbuild static/js/dashboard.tsx --bundle --outfile=static/dist/dashboard.js",
+    "build-js": "esbuild static/js/index.tsx --bundle --outfile=static/dist/dashboard.js",
     "build-css": "sass static/sass/styles.scss static/css/styles.css --load-path=node_modules --style=compressed && postcss --map false --use autoprefixer --replace 'static/css/**/*.css'",
     "serve": "./entrypoint 0.0.0.0:${PORT}",
     "start": "yarn run build && yarn run serve",
@@ -19,9 +20,11 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "sass": "1.27.0",
-    "typescript": "^4.3.5"
+    "typescript": "^4.3.5",
+    "watch-cli": "^0.2.3"
   },
   "dependencies": {
+    "@canonical/react-components": "^0.19.0",
     "@types/react": "^17.0.15",
     "@types/react-dom": "^17.0.9"
   }
