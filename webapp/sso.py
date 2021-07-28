@@ -37,6 +37,11 @@ def init_sso(app):
 
         return flask.redirect(open_id.get_next_url())
 
+    @app.route("/logout")
+    def logout():
+        flask.session.pop("openid")
+        return flask.redirect("/")
+
 
 def login_required(func):
     """
