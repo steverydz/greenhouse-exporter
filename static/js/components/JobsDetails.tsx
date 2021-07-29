@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { MainTable } from "@canonical/react-components";
+import { MainTable, Strip } from "@canonical/react-components";
 
 export const JobsDetails: React.FC<{}> = () => {
   const [jobs, setJobs] = useState([]);
@@ -10,19 +10,25 @@ export const JobsDetails: React.FC<{}> = () => {
       setJobs(await response.json());
     };
     getJobs();
-  });
+  }, []);
 
   return (
-    <section className="p-strip--light">
-      <div className="row">
-        <h2>Jobs details</h2>
-        <MainTable
-          headers={[{ content: "Job" }, { content: "Total applications" }]}
-          rows={jobs.map(({ job, applications }) => {
-            return { columns: [{ content: job }, { content: applications }] };
-          })}
-        />
-      </div>
-    </section>
+    <Strip type="light">
+      <h2>Jobs details</h2>
+      <MainTable
+        headers={[
+          { content: "Job", sortKey: "job" },
+          { content: "Total applications", sortKey: "applications" },
+        ]}
+        rows={jobs.map(({ job, applications }) => {
+          return {
+            columns: [{ content: job }, { content: applications }],
+            sortData: { job: job, applications: applications },
+          };
+        })}
+        sortable
+        emptyStateMsg={<i className="p-icon--spinner u-animation--spin"></i>}
+      />
+    </Strip>
   );
 };
