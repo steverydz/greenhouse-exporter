@@ -14,7 +14,7 @@
   "devDependencies": {
     "autoprefixer": "10.2.4",
     "esbuild": "0.12.16",
-    "vanilla-framework": "2.33.0",
+    "vanilla-framework": "2.33.1",
     "postcss": "8.2.10",
     "postcss-cli": "8.3.1",
     "react": "17.0.2",
@@ -24,7 +24,7 @@
     "watch-cli": "^0.2.3"
   },
   "dependencies": {
-    "@canonical/react-components": "^0.19.0",
+    "@canonical/react-components": "0.19.0",
     "@types/react": "^17.0.15",
     "@types/react-dom": "^17.0.9"
   }
