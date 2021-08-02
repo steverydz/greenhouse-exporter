@@ -24,7 +24,7 @@
     "watch-cli": "^0.2.3"
   },
   "dependencies": {
-    "@canonical/react-components": "0.19.0",
+    "@canonical/react-components": "0.20.0",
     "@types/react": "^17.0.15",
     "@types/react-dom": "^17.0.9"
   }
