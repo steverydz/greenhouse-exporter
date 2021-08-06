@@ -1,7 +1,6 @@
 from sqlalchemy.orm import declarative_base
 from sqlalchemy import Column, Integer, String, DateTime, Enum
 from sqlalchemy import ForeignKey
-from sqlalchemy.sql.expression import label
 
 
 Base = declarative_base()

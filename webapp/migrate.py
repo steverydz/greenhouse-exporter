@@ -1,5 +1,4 @@
 import csv
-import os
 
 from webapp.database import greenhouse_connection, db_session
 from webapp.functions import (
@@ -37,7 +36,7 @@ with greenhouse_connection() as connection:
                     .one_or_none()
                 )
                 hiring_leads[int(row["Job ID"])] = employee.id
-            except:
+            except Exception:
                 continue
 
     get_jobs(greenhouse_cursor, db_session, hiring_leads)
