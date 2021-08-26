@@ -13,6 +13,19 @@ greenhouse_connection = lambda: psycopg2.connect(
 
 
 engine = create_engine(os.getenv("CANONICAL_DATABASE_URL"))
-Base.metadata.create_all(engine)
-Session = sessionmaker(bind=engine)
-db_session = Session()
+db_session = None
+
+
+def create_session():
+    Base.metadata.create_all(engine)
+    Session = sessionmaker(bind=engine)
+    return Session()
+
+
+def drop_all():
+    Base.metadata.drop_all(engine)
+    global db_session
+    db_session = create_session()
+
+
+db_session = create_session()

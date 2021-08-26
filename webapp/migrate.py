@@ -1,7 +1,7 @@
 import csv
 import os
 
-from webapp.database import greenhouse_connection, db_session
+from webapp.database import greenhouse_connection, db_session, drop_all
 from webapp.functions import (
     add_new_candidates,
     get_jobs,
@@ -21,6 +21,7 @@ from webapp.models import Employee
 with greenhouse_connection() as connection:
     greenhouse_cursor = connection.cursor()
 
+    drop_all()
     import_employees(greenhouse_cursor, db_session)
 
     hiring_leads = {}
