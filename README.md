@@ -6,7 +6,7 @@ The database diagram can be found here: https://miro.com/app/board/o9J_l86oZgU=/
 
 ## Populate the database
 
-- Start a postgresql database for local development
+- Start a postgresql database for local development using docker-compose: `docker-compose up -d`
 - Create a file `.env.local`: `touch .env.local`
 - In this file add the 2 databases strings (ours and greenhouse's):
 ```
