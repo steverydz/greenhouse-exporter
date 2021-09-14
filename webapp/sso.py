@@ -4,6 +4,8 @@ import flask
 from django_openid_auth.teams import TeamsRequest, TeamsResponse
 from flask_openid import OpenID
 
+from webapp.settings import DEBUG, DEBUG_USER_EMAIL
+
 
 SSO_LOGIN_URL = "https://login.ubuntu.com"
 SSO_TEAM = "canonical-content-people"
@@ -34,6 +36,9 @@ def init_sso(app):
             "identity_url": resp.identity_url,
             "email": resp.email,
         }
+
+        if DEBUG and DEBUG_USER_EMAIL:
+            flask.session["openid"]["email"] = DEBUG_USER_EMAIL
 
         return flask.redirect(open_id.get_next_url())
 
