@@ -3,8 +3,8 @@ on: pull_request
 
 env:
   SECRET_KEY: insecure_test_key
-  GREENHOUSE_DATABASE_URL: postgres://postgres:pw@localhost:5432/postgres
-  CANONICAL_DATABASE_URL: postgres://postgres:pw@localhost:5432/postgres
+  GREENHOUSE_DATABASE_URL: postgresql://postgres:pw@localhost:5432/postgres
+  CANONICAL_DATABASE_URL: postgresql://postgres:pw@localhost:5432/postgres
 
 jobs:
   run-image:
