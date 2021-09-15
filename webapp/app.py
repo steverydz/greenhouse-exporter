@@ -7,8 +7,6 @@ from webapp.database import db_session, greenhouse_connection
 from webapp.models import Job, Employee
 from webapp.sso import init_sso, login_required
 
-from datetime import timedelta
-
 HARVEST_API_KEY = os.getenv("HARVEST_API_KEY")
 
 app = FlaskBase(
