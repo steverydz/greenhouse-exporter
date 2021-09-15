@@ -1,4 +1,3 @@
-name: hiring-canonical-com
 domain: hiring.canonical.com
 
 image: prod-comms.docker-registry.canonical.com/hiring.canonical.com
