@@ -1,4 +1,3 @@
-import csv
 from webapp.models import Candidate, Employee, Event, Job
 
 
@@ -49,7 +48,10 @@ def add_new_candidates(greenhouse_cursor, canonical_session):
 
 def import_candidate_applications(greenhouse_cursor, canonical_session):
     greenhouse_cursor.execute(
-        f"SELECT a.applied_at, a.candidate_id, jp.job_id FROM applications a join job_posts jp on a.job_post_id = jp.id"
+        """
+          SELECT a.applied_at, a.candidate_id, jp.job_id
+            FROM applications a join job_posts jp on a.job_post_id = jp.id
+        """
     )
     for application in greenhouse_cursor.fetchall():
         e = Event(
@@ -64,7 +66,12 @@ def import_candidate_applications(greenhouse_cursor, canonical_session):
 
 def import_candidate_rejections(greenhouse_cursor, canonical_session):
     greenhouse_cursor.execute(
-        "SELECT c.id, u.id, jp.job_id, a.rejected_at FROM applications a JOIN users u on a.rejected_by_id = u.id JOIN candidates c on a.candidate_id = c.id JOIN job_posts jp on a.job_post_id = jp.id;"
+        """
+            SELECT c.id, u.id, jp.job_id, a.rejected_at
+              FROM applications a JOIN users u on a.rejected_by_id = u.id
+              JOIN candidates c on a.candidate_id = c.id
+              JOIN job_posts jp on a.job_post_id = jp.id;
+        """
     )
 
     for rejection in greenhouse_cursor.fetchall():
@@ -83,7 +90,13 @@ def import_candidate_rejections(greenhouse_cursor, canonical_session):
 
 def import_candidate_hired(greenhouse_cursor, canonical_session):
     greenhouse_cursor.execute(
-        "select o.resolved_at, c.id, jp.job_id from offers o join applications a on o.application_id = a.id join candidates c on a.candidate_id = c.id JOIN job_posts jp on a.job_post_id = jp.id where o.status = 'accepted';"
+        """
+            SELECT o.resolved_at, c.id, jp.job_id
+              FROM offers o join applications a ON o.application_id = a.id
+              JOIN candidates c ON a.candidate_id = c.id
+              JOIN job_posts jp ON a.job_post_id = jp.id
+              WHERE o.status = 'accepted';
+        """
     )
 
     for hire in greenhouse_cursor.fetchall():
@@ -101,7 +114,14 @@ def import_candidate_hired(greenhouse_cursor, canonical_session):
 
 def import_cv_reviewed(greenhouse_cursor, canonical_session, hiring_leads):
     greenhouse_cursor.execute(
-        "SELECT jp.job_id, a.candidate_id, aps.exited_on FROM application_stages aps JOIN applications a ON a.id = aps.application_id JOIN job_posts jp ON a.job_post_id = jp.id WHERE aps.stage_name='Application Review' AND aps.exited_on is not null"
+        """
+            SELECT jp.job_id, a.candidate_id, aps.exited_on
+              FROM application_stages aps
+              JOIN applications a ON a.id = aps.application_id
+              JOIN job_posts jp ON a.job_post_id = jp.id
+              WHERE aps.stage_name='Application Review'
+                AND aps.exited_on is not null
+        """
     )
 
     for cv_reviewed in greenhouse_cursor.fetchall():
@@ -120,7 +140,12 @@ def import_cv_reviewed(greenhouse_cursor, canonical_session, hiring_leads):
 
 def interview_scheduled(greenhouse_cursor, canonical_session):
     greenhouse_cursor.execute(
-        "SELECT jp.job_id, a.candidate_id, si.scheduled_at FROM scheduled_interviews si JOIN applications a ON a.id = si.application_id JOIN job_posts jp ON a.job_post_id = jp.id"
+        """
+            SELECT jp.job_id, a.candidate_id, si.scheduled_at
+              FROM scheduled_interviews si
+              JOIN applications a ON a.id = si.application_id
+              JOIN job_posts jp ON a.job_post_id = jp.id
+        """
     )
 
     for interview_scheduled in greenhouse_cursor.fetchall():
@@ -138,7 +163,13 @@ def interview_scheduled(greenhouse_cursor, canonical_session):
 
 def participated_interview(greenhouse_cursor, canonical_session):
     greenhouse_cursor.execute(
-        "SELECT i.user_id, jp.job_id, si.ends_at, a.candidate_id FROM interviewers i JOIN scheduled_interviews si on i.interview_id = si.id JOIN applications a ON a.id = si.application_id JOIN job_posts jp ON a.job_post_id = jp.id"
+        """
+            SELECT i.user_id, jp.job_id, si.ends_at, a.candidate_id
+              FROM interviewers i
+              JOIN scheduled_interviews si on i.interview_id = si.id
+              JOIN applications a ON a.id = si.application_id
+              JOIN job_posts jp ON a.job_post_id = jp.id;
+        """
     )
 
     for participated_interview in greenhouse_cursor.fetchall():
@@ -157,7 +188,12 @@ def participated_interview(greenhouse_cursor, canonical_session):
 
 def scorecard_added(greenhouse_cursor, canonical_session):
     greenhouse_cursor.execute(
-        "SELECT s.interviewer_id, s.submitted_at, jp.job_id, a.candidate_id FROM scorecards s JOIN applications a ON a.id = s.application_id JOIN job_posts jp ON a.job_post_id = jp.id;"
+        """
+            SELECT s.interviewer_id, s.submitted_at, jp.job_id, a.candidate_id
+              FROM scorecards s
+              JOIN applications a ON a.id = s.application_id
+              JOIN job_posts jp ON a.job_post_id = jp.id;
+        """
     )
 
     for scorecard in greenhouse_cursor.fetchall():

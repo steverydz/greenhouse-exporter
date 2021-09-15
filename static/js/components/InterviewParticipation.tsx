@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { MainTable, Strip } from "@canonical/react-components";
 
-export const InterviewParticipation: React.FC<{}> = () => {
+export const InterviewParticipation: React.FC<any> = () => {
   const [interviews, setInterviews] = useState([]);
 
   useEffect(() => {
