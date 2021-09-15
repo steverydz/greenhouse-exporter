@@ -117,8 +117,10 @@ def api_workload():
                     "employee": row[1],
                     "type": row[2],
                     "date": row[3],
-                    "estimated_duration": round((row[4]-row[3]).total_seconds()/60),
-                    "status": row[5]
+                    "estimated_duration": round(
+                        (row[4] - row[3]).total_seconds() / 60
+                    ),
+                    "status": row[5],
                 }
             )
 
