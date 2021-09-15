@@ -1,4 +1,3 @@
-name: hiring-canonical-com
 domain: hiring.canonical.com
 
 image: prod-comms.docker-registry.canonical.com/hiring.canonical.com
@@ -6,7 +5,17 @@ image: prod-comms.docker-registry.canonical.com/hiring.canonical.com
 env:
   - name: SENTRY_DSN
     value: https://f51f18282e7d44bebe6cc268ba96f7a2@sentry.is.canonical.com//49
+  
+  - name: GREENHOUSE_DATABASE_URL
+    secretKeyRef:
+      key: greenhouse_database_url
+      name: hiring-databases
     
+  - name: CANONICAL_DATABASE_URL
+    secretKeyRef:
+      key: canonical_database_url
+      name: hiring-databases
+
 # Overrides for production
 production:
   replicas: 5
