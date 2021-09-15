@@ -3,17 +3,26 @@ import { MainTable, Strip } from "@canonical/react-components";
 
 export const InterviewParticipation: React.FC<any> = () => {
   const [interviews, setInterviews] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const getInterviews = async () => {
-      const response = await fetch("/api/interviews");
-      setInterviews(await response.json());
+      try {
+        const response = await fetch("/api/interviews");
+        if (response.status === 200) {
+          setInterviews(await response.json());
+        }
+      } catch (error) {
+        console.error("Error fetching endpoint /api/interviews: ", error);
+      } finally {
+        setIsLoading(false);
+      }
     };
     getInterviews();
   }, []);
 
   return (
-    <Strip type="light">
+    <Strip type="light" shallow={true}>
       <h2>Interview participation</h2>
       <MainTable
         headers={[
@@ -41,7 +50,14 @@ export const InterviewParticipation: React.FC<any> = () => {
           }
         )}
         sortable
-        emptyStateMsg={<i className="p-icon--spinner u-animation--spin"></i>}
+        paginate={10}
+        emptyStateMsg={
+          isLoading ? (
+            <i className="p-icon--spinner u-animation--spin"></i>
+          ) : (
+            <i>No data could be fetched</i>
+          )
+        }
       />
     </Strip>
   );

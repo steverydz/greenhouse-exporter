@@ -8,7 +8,7 @@ export const Dashboard: React.FC<any> = () => {
   return (
     <div className="l-application">
       <main className="l-main">
-        <Strip>
+        <Strip shallow={true}>
           <h1>Hiring Dashboard</h1>
         </Strip>
         <JobsDetails />
