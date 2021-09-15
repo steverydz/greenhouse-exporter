@@ -7,6 +7,8 @@ from webapp.database import db_session, greenhouse_connection
 from webapp.models import Job, Employee
 from webapp.sso import init_sso, login_required
 
+from datetime import timedelta
+
 HARVEST_API_KEY = os.getenv("HARVEST_API_KEY")
 
 app = FlaskBase(
@@ -91,3 +93,35 @@ def api_interviews():
             )
 
         return flask.jsonify(interviews)
+
+
+@app.route("/api/workload")
+# @login_required
+def api_workload():
+
+    with greenhouse_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute(
+            """SELECT i.user_id, i.user, i2.name, si.starts_at, si.ends_at, si.status
+                FROM interviewers i
+                    JOIN scheduled_interviews si on i.interview_id = si.id
+                    JOIN users u on i.user_id = u.id
+                    JOIN interviews i2 on si.interview_id = i2.id
+                WHERE u.email= %s
+                ORDER BY si.ends_at DESC;""",
+            ('thomas.bille@canonical.com',),
+        )
+
+        workload = []
+        for row in cursor.fetchall():
+            workload.append(
+                {
+                    "employee": row[1],
+                    "type": row[2],
+                    "date": row[3],
+                    "estimated_duration": round((row[4]-row[3]).total_seconds()/60),
+                    "status": row[5]
+                }
+            )
+
+        return flask.jsonify(workload)
