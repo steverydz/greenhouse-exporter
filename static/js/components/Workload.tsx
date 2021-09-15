@@ -1,50 +1,53 @@
 import React, { useEffect, useState } from "react";
 import { MainTable, Strip } from "@canonical/react-components";
 
-export const InterviewParticipation: React.FC<any> = () => {
-  const [interviews, setInterviews] = useState([]);
+export const Workload: React.FC<any> = () => {
+  const [workload, setWorkload] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const getInterviews = async () => {
+    const getWorkload = async () => {
       try {
-        const response = await fetch("/api/interviews");
+        const response = await fetch("/api/workload");
         if (response.status === 200) {
-          setInterviews(await response.json());
+          setWorkload(await response.json());
         }
       } catch (error) {
-        console.error("Error fetching endpoint /api/interviews: ", error);
+        console.error("Error fetching endpoint /api/workload: ", error);
       } finally {
         setIsLoading(false);
       }
     };
-    getInterviews();
+    getWorkload();
   }, []);
 
   return (
     <Strip type="light" shallow={true}>
-      <h2>Interview participation</h2>
+      <h2>Workload</h2>
       <MainTable
         headers={[
-          { content: "Applicant", sortKey: "applicant" },
+          { content: "Employee", sortKey: "employee" },
+          { content: "Type", sortKey: "type" },
           { content: "Date", sortKey: "date" },
-          { content: "Stage", sortKey: "stage" },
+          { content: "Estimated duration", sortKey: "estimated_duration" },
           { content: "Status", sortKey: "status" },
         ]}
-        rows={interviews.map(
-          ({ applicant, date, current_stage, application_status }) => {
+        rows={workload.map(
+          ({ employee, type, date, estimated_duration, status }) => {
             return {
               columns: [
-                { content: applicant },
+                { content: employee },
+                { content: type },
                 { content: date },
-                { content: current_stage },
-                { content: application_status },
+                { content: estimated_duration },
+                { content: status },
               ],
               sortData: {
-                applicant: applicant,
+                employee: employee,
+                type: type,
                 date: new Date(date),
-                stage: current_stage,
-                status: application_status,
+                estimated_duration: estimated_duration,
+                status: status,
               },
             };
           }

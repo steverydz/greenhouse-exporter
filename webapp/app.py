@@ -107,7 +107,7 @@ def api_workload():
                     JOIN interviews i2 on si.interview_id = i2.id
                 WHERE u.email= %s
                 ORDER BY si.ends_at DESC;""",
-            ('thomas.bille@canonical.com',),
+            (flask.session["openid"]["email"],),
         )
 
         workload = []
@@ -117,8 +117,10 @@ def api_workload():
                     "employee": row[1],
                     "type": row[2],
                     "date": row[3],
-                    "estimated_duration": round((row[4]-row[3]).total_seconds()/60),
-                    "status": row[5]
+                    "estimated_duration": round(
+                        (row[4] - row[3]).total_seconds() / 60
+                    ),
+                    "status": row[5],
                 }
             )
 
