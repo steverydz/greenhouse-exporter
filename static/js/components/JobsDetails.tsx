@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { MainTable, Strip } from "@canonical/react-components";
 
-export const JobsDetails: React.FC<{}> = () => {
+export const JobsDetails: React.FC<any> = () => {
   const [jobs, setJobs] = useState([]);
 
   useEffect(() => {

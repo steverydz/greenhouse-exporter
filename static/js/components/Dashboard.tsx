@@ -2,9 +2,8 @@ import * as React from "react";
 import { Strip } from "@canonical/react-components";
 import { InterviewParticipation } from "./InterviewParticipation";
 import { JobsDetails } from "./JobsDetails";
-import { MainTable, Strip } from "@canonical/react-components";
 
-export const Dashboard: React.FC<{}> = () => {
+export const Dashboard: React.FC<any> = () => {
   return (
     <div className="l-application">
       <main className="l-main">

@@ -7,9 +7,8 @@ from sqlalchemy import create_engine
 from webapp.models import Base
 
 
-greenhouse_connection = lambda: psycopg2.connect(
-    os.getenv("GREENHOUSE_DATABASE_URL")
-)
+def greenhouse_connection():
+    return psycopg2.connect(os.getenv("GREENHOUSE_DATABASE_URL"))
 
 
 engine = create_engine(os.getenv("CANONICAL_DATABASE_URL"))
