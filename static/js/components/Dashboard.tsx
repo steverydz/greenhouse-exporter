@@ -2,6 +2,7 @@ import * as React from "react";
 import { Strip } from "@canonical/react-components";
 import { InterviewParticipation } from "./InterviewParticipation";
 import { JobsDetails } from "./JobsDetails";
+import { Workload } from "./Workload";
 
 export const Dashboard: React.FC<any> = () => {
   return (
@@ -12,6 +13,7 @@ export const Dashboard: React.FC<any> = () => {
         </Strip>
         <JobsDetails />
         <InterviewParticipation />
+        <Workload />
       </main>
     </div>
   );
