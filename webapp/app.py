@@ -94,8 +94,48 @@ def api_interviews():
 
 
 @app.route("/api/workload")
-# @login_required
+@login_required
 def api_workload():
+    """Get interviews scheduled for the jobs that the logged user is a hiring lead."""
+
+    with greenhouse_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute(
+            """SELECT h.job_id, j.created_at, j.name, u.email, si.starts_at, si.ends_at, si.stage_name, si.id, i."user"
+                FROM hiring_team h
+                    JOIN jobs j on h.job_id = j.id
+                    JOIN users u on h.user_id = u.id
+                    JOIN applications_jobs aj on j.id = aj.job_id
+                    JOIN scheduled_interviews si on aj.application_id = si.application_id
+                    JOIN interviewers i on i.interview_id = si.id
+                WHERE j.status = 'open' AND u.email=%s AND h.role='Recruiter' AND h.responsible=true AND si.status='scheduled'
+                ORDER BY j.created_at DESC            
+            """,
+            (flask.session["openid"]["email"],),
+        )
+
+        workload = []
+        for row in cursor.fetchall():
+            workload.append(
+                {
+                    "interviewer": row[8],
+                    "stage": row[6],
+                    "date": row[4],
+                    "estimated_duration": round(
+                        (row[5] - row[4]).total_seconds() / 60
+                    ),
+                }
+            )
+
+        return flask.jsonify(workload)
+
+
+@app.route("/api/interviews/<email>")
+# @login_required
+def api_interviews_user(email):
+    """Get interviews schedules for a specific employee
+    2021-09-16: This is not currently used. Kept just for reference
+    """
 
     with greenhouse_connection() as conn:
         cursor = conn.cursor()
@@ -107,12 +147,12 @@ def api_workload():
                     JOIN interviews i2 on si.interview_id = i2.id
                 WHERE u.email= %s
                 ORDER BY si.ends_at DESC;""",
-            (flask.session["openid"]["email"],),
+            (email,),
         )
 
-        workload = []
+        interviews = []
         for row in cursor.fetchall():
-            workload.append(
+            interviews.append(
                 {
                     "employee": row[1],
                     "type": row[2],
@@ -124,4 +164,4 @@ def api_workload():
                 }
             )
 
-        return flask.jsonify(workload)
+        return flask.jsonify(interviews)

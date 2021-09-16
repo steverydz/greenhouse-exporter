@@ -26,28 +26,25 @@ export const Workload: React.FC<any> = () => {
       <h2>Workload</h2>
       <MainTable
         headers={[
-          { content: "Employee", sortKey: "employee" },
-          { content: "Type", sortKey: "type" },
+          { content: "Interviewer", sortKey: "interviewer" },
           { content: "Date", sortKey: "date" },
+          { content: "Stage", sortKey: "stage" },
           { content: "Estimated duration", sortKey: "estimated_duration" },
-          { content: "Status", sortKey: "status" },
         ]}
         rows={workload.map(
-          ({ employee, type, date, estimated_duration, status }) => {
+          ({ interviewer, stage, date, estimated_duration }) => {
             return {
               columns: [
-                { content: employee },
-                { content: type },
+                { content: interviewer },
                 { content: date },
+                { content: stage },
                 { content: estimated_duration },
-                { content: status },
               ],
               sortData: {
-                employee: employee,
-                type: type,
-                date: new Date(date),
+                interviewer: interviewer,
+                date: date,
+                stage: stage,
                 estimated_duration: estimated_duration,
-                status: status,
               },
             };
           }
